@@ -1,0 +1,5 @@
+from pathlib import Path
+articles_path = Path('C:\\Users\\Paco Tiberghien\\iCloudDrive\\Esilv\\année 4\\computerscience\\backend\\articles')
+
+articles = [i for i in articles_path.iterdir()]
+print(articles)
