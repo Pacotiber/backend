@@ -1,6 +1,5 @@
 
 from schemas import ArticleInfo, Article, CreateArticle, comment
-from fastapi import HTTPException
 from pathlib import Path
 import markdown2
 from urllib.parse import unquote
