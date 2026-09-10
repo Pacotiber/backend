@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Blog — Articles</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <!--
+      Vue controls everything inside #app.
+      v-cloak hides the page while Vue is starting.
+    -->
+    <div id="app" v-cloak>
+      <!-- Header shared by every page. -->
+      <header class="site-header">
+        <a class="brand" href="#/">Blog</a>
+
+        <nav aria-label="Main navigation">
+          <a href="#/">Articles</a>
+          <a href="#/comments">Comments</a>
+
+          <!-- v-if displays this link only when the create feature is enabled. -->
+          <a v-if="features.create" class="button button-small" href="#/create">
+            New article
+          </a>
+        </nav>
+      </header>
+
+      <main class="page" :aria-busy="loading">
+        <!-- v-if displays this message while a FastAPI request is running. -->
+        <p v-if="loading" class="message" role="status">Loading…</p>
+
+        <!-- v-else-if takes over when the request fails. -->
+        <div v-else-if="error" class="message message-error" role="alert">
+          <strong>Something went wrong.</strong>
+
+          <!-- Double braces display the value of a Vue variable. -->
+          <span>{{ error }}</span>
+          <small>Technical details are also available in the browser console.</small>
+
+          <!-- @click calls a function when the button is clicked. -->
+          <button type="button" class="text-button" @click="loadCurrentPage">
+            Try again
+          </button>
+        </div>
+
+        <!--
+          PAGE 1: ARTICLE LIST
+          This section is visible when page equals "list".
+        -->
+        <section v-else-if="page === 'list'">
+          <p class="eyebrow">Course articles</p>
+          <h1>Articles</h1>
+          <p class="intro">
+            The content below is provided by the FastAPI backend.
+          </p>
+
+          <!-- Reloads the current page and fetches GET /list again. -->
+          <button
+            class="button button-secondary refresh-button"
+            type="button"
+            @click="refreshArticles"
+          >
+            Refresh list
+          </button>
+
+          <div v-if="articles.length" class="article-grid">
+            <!-- v-for repeats this link for every article received. -->
+            <a
+              v-for="article in articles"
+              :key="article.articleUrl"
+              class="article-card"
+              :href="getArticleLink(article.articleUrl)"
+            >
+              <!-- :href builds the address with JavaScript. -->
+              <h2>{{ article.name }}</h2>
+              <span>Read article →</span>
+            </a>
+          </div>
+          <p v-else class="message">No articles are available.</p>
+        </section>
+
+        <!--
+          PAGE 2: READ AN ARTICLE
+          currentArticle contains the article returned by FastAPI.
+        -->
+        <div v-else-if="page === 'article' &amp;&amp; currentArticle" class="article-layout">
+          <article class="article-panel">
+            <div class="article-heading">
+              <div>
+                <a class="back-link" href="#/">← All articles</a>
+                <h1>{{ currentArticle.name }}</h1>
+              </div>
+
+              <div class="form-actions">
+              <!-- This button stays hidden until the edit feature is enabled. -->
+              <a
+                v-if="features.edit"
+                class="button button-secondary"
+                :href="getEditLink(getArticleUrl(currentArticle.name))"
+              >
+                Edit
+              </a>
+              <button class="button button-danger" type="button" @click="confirmDelete">
+                Delete
+              </button>
+              </div>
+            </div>
+
+            <!--
+              v-html inserts the HTML already rendered from Markdown by FastAPI.
+              Only display content controlled by the backend here.
+            -->
+            <div class="article-metadata">
+              <p v-if="currentArticle.author">By {{ currentArticle.author }}</p>
+              <p v-if="currentArticle.category">Category: {{ currentArticle.category }}</p>
+              <p v-if="currentArticle.tags?.length">Tags: {{ currentArticle.tags.join(', ') }}</p>
+            </div>
+            <div class="article-content" v-html="currentArticle.content"></div>
+            <article-metadata-guide
+              :article="currentArticle"
+              @retry="loadCurrentPage"
+            ></article-metadata-guide>
+          </article>
+
+          <!-- Secondary navigation displayed next to the article. -->
+          <aside class="sidebar" aria-label="Article list">
+            <h2>Other articles</h2>
+            <ul v-if="otherArticles.length">
+              <li v-for="article in otherArticles" :key="article.articleUrl">
+                <a :href="getArticleLink(article.articleUrl)">
+                  {{ article.name }}
+                </a>
+              </li>
+            </ul>
+            <p v-else class="sidebar-empty">No other articles.</p>
+          </aside>
+        </div>
+
+        <!--
+          PAGE 3: CREATE AN ARTICLE
+          This screen stays unavailable while features.create is false.
+        -->
+        <section v-else-if="page === 'create'" class="form-page">
+          <p class="eyebrow">New article</p>
+          <h1>Create an article</h1>
+
+          <!-- @submit.prevent avoids a reload and calls createArticle(). -->
+          <form class="article-form" @submit.prevent="createArticle">
+            <!-- Optional metadata; tags are separated with commas. -->
+            <label>
+              Author (optional)
+              <input v-model.trim="metadata.author" />
+            </label>
+            <label>
+              Category (optional)
+              <input v-model.trim="metadata.category" />
+            </label>
+            <label>
+              Tags (optional)
+              <input v-model="metadata.tags" placeholder="Python, Web" />
+              <small>Separate tags with commas.</small>
+            </label>
+            <label>
+              Name
+
+              <!-- v-model connects this input to a JavaScript variable. -->
+              <input
+                v-model.trim="newArticle.name"
+                required
+                autocomplete="off"
+                placeholder="Discover FastAPI"
+              />
+            </label>
+
+            <label>
+              Markdown content
+              <textarea v-model="newArticle.content" required rows="16"></textarea>
+            </label>
+
+            <!-- Submission errors are kept separate from loading errors. -->
+            <p v-if="submitError" class="message message-error" role="alert">
+              {{ submitError }}
+            </p>
+
+            <div class="form-actions">
+              <a class="button button-secondary" href="#/">Cancel</a>
+              <button class="button" type="submit" :disabled="saving">
+                {{ saving ? 'Creating…' : 'Create' }}
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <!--
+          PAGE 4: EDIT AN ARTICLE
+          draft contains an editable copy of the article Markdown.
+        -->
+        <section v-else-if="page === 'edit' &amp;&amp; currentArticle" class="form-page">
+          <p class="eyebrow">Edit article</p>
+          <h1>{{ currentArticle.name }}</h1>
+
+          <!-- The form calls saveArticle() without reloading the page. -->
+          <form class="article-form" @submit.prevent="saveArticle">
+            <!-- Optional metadata; tags are separated with commas. -->
+            <label>
+              Author (optional)
+              <input v-model.trim="metadata.author" />
+            </label>
+            <label>
+              Category (optional)
+              <input v-model.trim="metadata.category" />
+            </label>
+            <label>
+              Tags (optional)
+              <input v-model="metadata.tags" placeholder="Python, Web" />
+              <small>Separate tags with commas.</small>
+            </label>
+            <label>
+              Markdown content
+              <textarea v-model="draft" required rows="20"></textarea>
+            </label>
+
+            <p v-if="submitError" class="message message-error" role="alert">
+              {{ submitError }}
+            </p>
+
+            <div class="form-actions">
+              <a
+                class="button button-secondary"
+                :href="getArticleLink(getArticleUrl(currentArticle.name))"
+              >
+                Cancel
+              </a>
+              <button class="button" type="submit" :disabled="saving">
+                {{ saving ? 'Saving…' : 'Save' }}
+              </button>
+            </div>
+          </form>
+        </section>
+        <!-- Site-wide discussion: comments are plain text, not HTML. -->
+        <comments-guide
+          v-else-if="page === 'comments' &amp;&amp; commentsUnavailable"
+          @retry="loadCurrentPage"
+        ></comments-guide>
+        <section v-else-if="page === 'comments'" class="form-page">
+          <h1>Comments</h1>
+          <p class="intro">A space for feedback and discussion about the whole site.</p>
+          <button class="button button-secondary refresh-button" type="button" @click="loadCurrentPage">
+            Refresh comments
+          </button>
+
+          <ul v-if="comments.length" class="comment-list">
+            <li v-for="comment in comments" :key="comment.id" class="comment">
+              <strong>{{ comment.author || 'Anonymous' }}</strong>
+              <p>{{ comment.content }}</p>
+            </li>
+          </ul>
+          <p v-else class="message">No comments yet.</p>
+
+          <h2>Leave a comment</h2>
+          <form class="article-form" @submit.prevent="postComment">
+            <label>
+              Author (optional)
+              <input v-model.trim="newComment.author" :disabled="postingComment" />
+            </label>
+            <label>
+              Comment
+              <textarea v-model="newComment.content" required rows="5" :disabled="postingComment"></textarea>
+            </label>
+            <p v-if="commentError" class="message message-error" role="alert">{{ commentError }}</p>
+            <p v-if="commentSuccess" class="message" role="status">{{ commentSuccess }}</p>
+            <div class="form-actions">
+              <button class="button" type="submit" :disabled="postingComment">
+                {{ postingComment ? 'Posting…' : 'Post comment' }}
+              </button>
+            </div>
+          </form>
+        </section>
+      </main>
+      <!-- Native dialog provides modal focus handling and keyboard support. -->
+      <dialog ref="deleteDialog" aria-labelledby="delete-title" @cancel.prevent="cancelDelete">
+        <h2 id="delete-title">{{ deleteError ? 'Deletion could not be completed' : 'Delete article?' }}</h2>
+        <delete-article-guide v-if="deleteError" :error="deleteError"></delete-article-guide>
+        <p v-else>Move “{{ articleToDelete?.name }}” to trash? Its file will be kept and can be restored later.</p>
+        <p v-if="deleting" role="status">Deleting…</p>
+        <div class="form-actions">
+          <button class="button button-secondary" type="button" autofocus
+            :disabled="deleting" @click="cancelDelete">{{ deleteError ? 'Close' : 'Cancel' }}</button>
+          <button v-if="!deleteError" class="button button-danger" type="button"
+            :disabled="deleting" @click="deleteArticle">
+            {{ deleting ? 'Deleting…' : 'Delete article' }}
+          </button>
+        </div>
+      </dialog>
+    </div>
+
+    <!--
+      Scripts load in this order: Vue, configuration, API client, application.
+      Vue is stored in vendor, so no installation or Internet access is needed.
+    -->
+    <script src="vendor/vue.global.prod.js"></script>
+    <script src="config.js"></script>
+    <script src="api.js"></script>
+    <script src="comments-guide.js"></script>
+    <script src="article-metadata-guide.js"></script>
+    <script src="delete-article-guide.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

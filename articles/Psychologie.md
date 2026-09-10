@@ -1,4 +1,5 @@
 # Psychologie
+# Paco Tiberghien
 
 La psychologie (du grec ψυχή / psukhế, « âme », et λόγος / lógos, « parole, discours ») est une discipline scientifique qui s'intéresse à l'étude du corpus des connaissances sur les faits psychiques, les comportements et les processus mentaux.
 La psychologie est la connaissance empirique ou intuitive des sentiments, des idées, des comportements d'une personne et des manières de penser, de sentir, d'agir qui caractérisent un individu ou un groupe. Il est commun de définir aussi la psychologie comme l'étude scientifique des comportements.

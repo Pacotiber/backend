@@ -1,4 +1,8 @@
-# Linguistique
+#Linguistique 
+
+#Linguistique 
+
+
 
 La linguistique est une discipline scientifique s'intéressant à l'étude du langage. Elle n'est pas prescriptive mais descriptive. La prescription correspond à la norme, c'est-à-dire ce qui est jugé correct linguistiquement : c'est l'activité des académies et des grammairiens. À l'inverse, la linguistique se contente de décrire la langue telle qu'elle est et non telle qu'elle devrait être.
 On trouve des témoignages de réflexions sur le langage dès l'Antiquité avec des philosophes comme Platon. Cependant il faut attendre le XXe siècle pour voir se dégager une approche scientifique autour des faits de langues. Ferdinand de Saussure a grandement contribué à la description du langage et des langues, notamment avec son influent Cours de linguistique générale (1916) qui est devenu un classique dans ce domaine et a imposé la conception structurale du langage qui domine largement la linguistique contemporaine en dépit des conflits d'écoles. André Martinet a aussi contribué à cette discipline avec son ouvrage Éléments de linguistique générale présentant les divers faits de langues. On peut également citer Noam Chomsky, qui a posé les bases de la linguistique générative, qui est un modèle parmi d'autres.

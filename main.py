@@ -29,24 +29,22 @@ def create_articleApi(body: CreateArticle) -> Article:
     return create_article(body.name, body.content, body.author, body.tags, body.category)
 
 
-app.post("/create")(create_articleApi)
-
 # Modifie un article
 app.post("/article/{article_url}/edit")(edit_article)
 
 # Ajoute un commentaire
 @app.post("/comments")
 def commentsomethinh(comment: PostComment):
-    if comment.author != "":
-        return make_comment(comment.author, comment.content)
-    else:
-        return make_comment("Anonymous", comment.content)
-
+    return make_comment(comment.author, comment.content)
+  
 
 # Récupère les commentaires
 @app.get("/comments")
 def read_com():
-    return read_comment()
+    try:
+        return read_comment()
+    except FileNotFoundError:
+        raise HTTPException(404, "Comments not found")
 
 
 # Supprime un commentaire

@@ -49,12 +49,14 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi", extra = ["standard"] },
     { name = "markdown2" },
+    { name = "pydantic" },
 ]
 
 [package.metadata]
 requires-dist = [
     { name = "fastapi", extras = ["standard"], specifier = ">=0.141.1" },
     { name = "markdown2", specifier = ">=2.5.5" },
+    { name = "pydantic", specifier = ">=2.13.5" },
 ]
 
 [[package]]

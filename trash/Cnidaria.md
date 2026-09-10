@@ -1,4 +1,6 @@
-# Cnidaria
+#Cnidaria 
+
+#Cnidaria 
 
 Les Cnidaires (Cnidaria) sont un embranchement d'animaux aquatiques (marins à 99 %, 1 % de dulcicoles seulement), possédant une symétrie radiale et des nématocystes (organites capables de lancer un harpon urticant pour attraper des proies). Cet embranchement regroupe notamment les anémones de mer, les méduses et les coraux.
 L'appellation vient du grec ancien κνίδη / knídê, « ortie ») faisant allusion aux cellules urticantes caractéristiques de ces animaux (les cnidocytes ou cnidoblastes), le nom vernaculaire d'« orties de mer » étant donné par Aristote qui y regroupe les Acalèphes (méduses) et les Coralliaires. Les zoologistes ont ainsi donné le nom de cet embranchement en hommage à Aristote.

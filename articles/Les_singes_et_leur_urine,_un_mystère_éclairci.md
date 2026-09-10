@@ -1,0 +1,6 @@
+#Les singes et leur urine, un mystère éclairci 
+
+National Geographic nous instruit sur un mystère de la plus haute importance. Pourquoi les singes frottent-ils leur fourrure avec leur urine ? Les spécialistes des primates avaient envisagé différentes hypothèses : s'agissait-il de réguler leur température corporelle ? d'éloigner et d'impressionner leurs concurrents ? Des scientifiques texans ont enfin la réponse. Il s'agit de séduire les partenaires du sexe opposé.
+
+
+Pour en arriver à cette conclusion, les scientifiques ont étudié les réactions cérébrales de plusieurs femelles mises en contact avec l'urine de jeunes singes et de singes adultes. Les parties du cerveau des femelles associées à l'odorat et au sexe étaient davantage stimulées par l'urine des singes adultes que par celle des jeunes. Le fait de s'enduire d'urine permettrait donc aux femelles de faire leur choix entre les mâles. Les scientifiques texans vont maintenant soumettre les mâles à l'expérience inverse pour confirmer leur hypothèse.

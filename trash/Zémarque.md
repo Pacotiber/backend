@@ -1,7 +1,7 @@
 # Zémarque
 
 Zémarque, également orthographié Zémarche (en latin : Zemarchus, en grec ancien : Ζήμαρχος, Zemarchos), est un aristocrate byzantin et un diplomate du VIe siècle, connu pour avoir été l'émissaire de l'empereur Justin II auprès des Göktürks lors d'une mission diplomatique particulièrement lointaine pour l'époque, vers 569-570.
-Rapportée de manière assez détaillée par les sources byzantines, cette mission permet d'approcher les conditions de la diplomatie byzantine et offre un aperçu du monde nomade et de sa perception par les Byzantins, autant que des relations possibles le long des routes de la soie.
+Rapportée de manière assez détaillée par les sources byzantines, cette mission permet d'approcher les conditions de la diplomatie byzantine et offre un aperçu du monde nomade et de sa perception par les Byzantins, autant que des relations possibles le long des routes de la soie. JE m'appelle mohammed sumbul
 Si Zémarque parvient à nouer de bons contacts avec les Göktürks et à rentrer à Constantinople, non sans quelques péripéties, aucune alliance concrète n'est conclue à cette occasion, même si les contacts demeurent, oscillant entre début d'hostilité et recherche d'alliance.
 
 
