@@ -111,9 +111,9 @@ def edit_article(body: dict, article_url):
         "tags": body.get("tags", []),
         "category": body.get("category", "Uncategorized")
     }
-
-    with metadata_dir.open("w", encoding="utf-8") as file:
-        json.dump(metadata, file, ensure_ascii=False, indent=2)
+    if( metadata_dir.exists()):
+       with metadata_dir.open("w", encoding="utf-8") as file:
+            json.dump(metadata, file, ensure_ascii=False, indent=2)
 
 def getUrlformat(name) -> str:
     """
